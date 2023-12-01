@@ -1,34 +1,39 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import QueryKeys from './Querykey';
+import { z } from 'zod';
 
-export type FetchPictureType = {
-    id: string;
-};
+const ParameterType = z.object({
+    id: z.string(),
+});
 
-export type PicturesIndividualType = {
-    id: string;
-    description: string;
-    alt_description: string;
-    width: number;
-    height: number;
-    urls: {
-        raw: string;
-        full: string;
-        regular: string;
-        small: string;
-        thumb: string;
-    };
-};
+const PictureItem = z.object({
+    id: z.string(),
+    description: z.string(),
+    alt_description: z.string(),
+    width: z.number(),
+    height: z.number(),
+    urls: z.object({
+        raw: z.string(),
+        full: z.string(),
+        regular: z.string(),
+        small: z.string(),
+        thumb: z.string(),
+    }),
+});
 
-export const fetchPicture = async ({ id }: FetchPictureType) => {
+export type FetchPictureParameterType = z.infer<typeof ParameterType>;
+
+export type PicturesIndividualType = z.infer<typeof PictureItem>;
+
+export const fetchPicture = async ({ id }: FetchPictureParameterType) => {
     const { data } = await axios.get<PicturesIndividualType>(
-        `/api/photos/${id}?client_id=${process.env.unsplash_access_key}`,
+        `/photo/photos/${id}?client_id=${process.env.unsplash_access_key}`,
     );
     return data;
 };
 
-export const useGetPictureQuery = ({ id }: FetchPictureType) =>
+export const useGetPictureQuery = ({ id }: FetchPictureParameterType) =>
     useQuery([QueryKeys.picture, id], () => fetchPicture({ id }), {
         refetchOnWindowFocus: false,
         retry: false,

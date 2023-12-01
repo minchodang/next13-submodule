@@ -24,7 +24,7 @@ export type PicturesIndividualType = {
 
 export const fetchPictures = async ({ page, limit }: FetchPictureType) => {
     const { data } = await axios.get<PicturesIndividualType[]>(
-        `/api/photos/?client_id=${process.env.unsplash_access_key}&page=${page}&per_page=${limit}`,
+        `/photo/photos/?client_id=${process.env.unsplash_access_key}&page=${page}&per_page=${limit}`,
     );
     return data;
 };
