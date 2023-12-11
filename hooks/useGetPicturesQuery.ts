@@ -30,11 +30,13 @@ export const fetchPictures = async ({ page, limit }: FetchPictureType) => {
 };
 
 export const useGetPicturesQuery = ({ page, limit }: FetchPictureType) =>
-    useQuery([QueryKeys.pictures], () => fetchPictures({ page, limit }), {
+    useQuery({
+        queryKey: [QueryKeys.pictures],
+        queryFn: () => fetchPictures({ page, limit }),
         refetchOnWindowFocus: false,
         retry: false,
         refetchOnMount: false,
         refetchOnReconnect: false,
         staleTime: 5 * 60 * 1000,
-        cacheTime: 120 * 60 * 1000,
+        gcTime: 120 * 60 * 1000,
     });

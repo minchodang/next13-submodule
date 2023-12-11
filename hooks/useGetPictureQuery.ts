@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import QueryKeys from './Querykey';
 import { z } from 'zod';
+import QueryKeys from './Querykey';
 
 const ParameterType = z.object({
     id: z.string(),
@@ -34,11 +34,13 @@ export const fetchPicture = async ({ id }: FetchPictureParameterType) => {
 };
 
 export const useGetPictureQuery = ({ id }: FetchPictureParameterType) =>
-    useQuery([QueryKeys.picture, id], () => fetchPicture({ id }), {
+    useQuery({
+        queryKey: [QueryKeys.picture, id],
+        queryFn: () => fetchPicture({ id }),
         refetchOnWindowFocus: false,
         retry: false,
         refetchOnMount: false,
         refetchOnReconnect: false,
         staleTime: 5 * 60 * 1000,
-        cacheTime: 120 * 60 * 1000,
+        gcTime: 120 * 60 * 1000,
     });
