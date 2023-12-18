@@ -9,13 +9,13 @@ const zodData = z.object({
     }),
 });
 
-export type zodType = z.infer<typeof zodData>;
+export type ZodType = z.infer<typeof zodData>;
 
 export const getZodData = async () => {
-    const { data } = await axios.get<zodType>('/api/zod-test');
+    const { data } = await axios.get<ZodType>('/api/zod-test');
     try {
         return zodData.parse(data);
     } catch (error) {
-        alert(error);
+        return alert(error);
     }
 };
