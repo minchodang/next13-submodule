@@ -28,7 +28,7 @@ export type PicturesIndividualType = z.infer<typeof PictureItem>;
 
 export const fetchPicture = async ({ id }: FetchPictureParameterType) => {
     const { data } = await axios.get<PicturesIndividualType>(
-        `/photo/photos/${id}?client_id=${process.env.unsplash_access_key}`,
+        `https://api.unsplash.com/photos/${id}?client_id=${process.env.unsplash_access_key}`,
     );
     return data;
 };
